@@ -1,7 +1,7 @@
 const axios = require("axios");
+const { httpHelperFunction } = require("../httpHelper/httpHelperFunction");
 require("dotenv").config();
 
-const url = process.env.BASE_URL;
 const apikey = process.env.API_KEY;
 
 /**
@@ -10,10 +10,9 @@ const apikey = process.env.API_KEY;
  */
 const trendingMoviesShows = async () => {
   try {
-    const response = await axios.get(
-      `${url}/trending/all/day?api_key=${apikey}`
-    );
-    return response.data.results;
+    const extendUri = `/trending/all/day?api_key=${apikey}`;
+    const response = await httpHelperFunction(extendUri);
+    return response.results;
   } catch (error) {
     throw new Error("Failed to fetch data from TMDb API.");
   }
@@ -25,10 +24,9 @@ const trendingMoviesShows = async () => {
  */
 const trendingMovies = async () => {
   try {
-    const response = await axios.get(
-      `${url}/trending/movie/day?api_key=${apikey}`
-    );
-    return response.data.results;
+    const extendUri = `/trending/movie/day?api_key=${apikey}`;
+    const response = await httpHelperFunction(extendUri);
+    return response.results;
   } catch (error) {
     throw new Error("Failed to fetch data from TMDB API.");
   }
@@ -40,10 +38,9 @@ const trendingMovies = async () => {
  */
 const tredingTvShows = async () => {
   try {
-    const response = await axios.get(
-      `${url}/trending/tv/day?api_key=${apikey}`
-    );
-    return response.data.results;
+    const extendUri = `/trending/tv/day?api_key=${apikey}`;
+    const response = await httpHelperFunction(extendUri);
+    return response.results;
   } catch (error) {
     throw new Error("Failed to fetch data from TMDB API.");
   }
@@ -55,10 +52,9 @@ const tredingTvShows = async () => {
  */
 const getMovieShowDetails = async (type, id) => {
   try {
-    const response = await axios.get(
-      `${url}/${type}/${id}?api_key=${apikey}&language=en-US`
-    );
-    return response.data;
+    const extendUri = `/${type}/${id}?api_key=${apikey}&language=en-US`;
+    const response = await httpHelperFunction(extendUri);
+    return response;
   } catch (error) {
     throw new Error("Failed to get movie or show details");
   }
@@ -70,10 +66,9 @@ const getMovieShowDetails = async (type, id) => {
  */
 const getCreditDetails = async (type, id) => {
   try {
-    const response = await axios.get(
-      `${url}/${type}/${id}/credits?api_key=${apikey}&language=en-US`
-    );
-    return response?.data;
+    const extendUri = `/${type}/${id}/credits?api_key=${apikey}&language=en-US`;
+    const response = await httpHelperFunction(extendUri);
+    return response;
   } catch (error) {
     throw new Error("Failed to get movie or show credits details", error);
   }
@@ -86,11 +81,10 @@ const getCreditDetails = async (type, id) => {
  */
 const getRecommendedMovieData = async (id) => {
   try {
-    const response = await axios.get(
-      `${url}/movie/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`
-    );
+    const extendUri = `/movie/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`;
+    const response = await httpHelperFunction(extendUri);
     // console.log(response.data.results);
-    return response.data.results;
+    return response.results;
   } catch (error) {
     // console.log(`Error getting  recommended movie `, error);
     throw new Error("Failed to get  recommended movie");
@@ -104,10 +98,9 @@ const getRecommendedMovieData = async (id) => {
  */
 const getSimilarMovieData = async (id) => {
   try {
-    const response = await axios.get(
-      `${url}/movie/${id}/similar?api_key=${apikey}&language=en-US&page=1`
-    );
-    return response.data.results;
+    const extendUri = `/movie/${id}/similar?api_key=${apikey}&language=en-US&page=1`;
+    const response = await httpHelperFunction(extendUri);
+    return response.results;
   } catch (error) {
     // console.log(`Error getting similar movie`, error);
     throw new Error("Failed to get similar movie");
@@ -121,10 +114,9 @@ const getSimilarMovieData = async (id) => {
  */
 const getRecommendedTvData = async (id) => {
   try {
-    const response = await axios.get(
-      `${url}/tv/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`
-    );
-    return response.data.results;
+    const extendUri = `/tv/${id}/recommendations?api_key=${apikey}&language=en-US&page=1`;
+    const response = await httpHelperFunction(extendUri);
+    return response.results;
   } catch (error) {
     // console.log(`Error getting  recommended Tv `, error);
     throw new Error("Failed to get  recommended Tv");
@@ -138,10 +130,9 @@ const getRecommendedTvData = async (id) => {
  */
 const getSimilarTvData = async (id) => {
   try {
-    const response = await axios.get(
-      `${url}/tv/${id}/similar?api_key=${apikey}&language=en-US&page=1`
-    );
-    return response.data.results;
+    const extendUri = `/tv/${id}/similar?api_key=${apikey}&language=en-US&page=1`;
+    const response = await httpHelperFunction(extendUri);
+    return response.results;
   } catch (error) {
     // console.log(`Error getting similar Tv`, error);
     throw new Error("Failed to get similar Tv");
@@ -156,10 +147,9 @@ const getSimilarTvData = async (id) => {
  */
 const getReviewData = async (type, id) => {
   try {
-    const response = await axios.get(
-      `${url}/${type}/${id}/reviews?api_key=${apikey}&language=en-US&page=1`
-    );
-    return response.data.results;
+    const extendUri = `/${type}/${id}/reviews?api_key=${apikey}&language=en-US&page=1`;
+    const response = await httpHelperFunction(extendUri);
+    return response.results;
   } catch (error) {
     throw new Error("Failed to get search data");
   }
@@ -171,11 +161,11 @@ const getReviewData = async (type, id) => {
  */
 const getSearchbarData = async (query) => {
   try {
-    const response = await axios.get(
-      `${url}/search/movie?api_key=${apikey}&query=${query}&include_adult=false&language=en-US&page=1`
-    );
+    const extendUri = `/search/movie?api_key=${apikey}&query=${query}&include_adult=false&language=en-US&page=1`;
+
+    const response = await httpHelperFunction(extendUri);
     // console.log(response.data.results);
-    return response.data.results;
+    return response.results;
   } catch (error) {
     // console.log(`Error getting search data`, error);
     throw new Error("Failed to get search data");
